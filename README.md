@@ -8,7 +8,7 @@ ViTour, kullanıcıların hayallerindeki rotaları keşfetmelerini sağlayan, **
 
 ### 🧭 Tur Yönetimi (Archive Tour)
 * 📥 **Dinamik Veri:** MongoDB üzerinden anlık çekilen tur bilgileri.
-* 📄 **Akıllı Pagination:** Her sayfada 6 tur olacak şekilde optimize edilmiş sayfalama.
+* 📄 **Akıllı Pagination:** Her sayfada kendinize uygun şekilde optimize edilmiş sayfalama.
 * 🔍 **Gelişmiş Filtreleme:** Kategori ve lokasyona göre hızlı arama seçenekleri.
 
 ### 🗺️ Dinamik Tur Detayları
@@ -60,23 +60,19 @@ Sistem, kullanıcı tercihlerine göre **Cookie** tabanlı dil seçimi sunar:
 * 🇹🇷 **Türkçe** | 🇺🇸 **English** |
 
 ---
-
-## 🧱 Proje Mimarisi
-
-Proje, sürdürülebilir ve ölçeklenebilir bir yapı için **Service Layer Pattern** ile kurgulanmıştır:
-
-```text
-Project3ViTour
-├── 📂 Entities        # Veritabanı Modelleri
-├── 📂 Services        # İş Mantığı (Business Logic)
-├── 📂 DTOs            # Veri Taşıma Nesneleri
-├── 📂 Controllers     # İstek Yönetimi
-├── 📂 ViewComponents  # Dinamik UI Parçaları
-├── 📂 Views           # Arayüz Şablonları (Razor)
-└── 📂 wwwroot         # Statik Dosyalar (CSS, JS, Image)
----
 ## 📸 Screenshots
 
-<img src="images/home.png" width="600"/>
-<img src="images/detail.png" width="600"/>
-<img src="images/admin.png" width="600"/>
+<p align="center">
+  <img src="ProjeResimleri/turlist.png" width="45%" />
+  <img src="ProjeResimleri/turplan2.png" width="45%" /> 
+</p>
+<p align="center">
+  <img src="ProjeResimleri/yorumlar.png" width="45%" />
+  <img src="ProjeResimleri/gallery.png" width="45%" />
+</p>
+<p align="center">
+  <img src="ProjeResimleri/email.png" width="45%" />
+  <img src="ProjeResimleri/dashboard.png" width="45%" />
+</p>
+  
+
