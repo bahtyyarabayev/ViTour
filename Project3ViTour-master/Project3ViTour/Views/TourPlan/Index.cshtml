@@ -1,0 +1,137 @@
+﻿@model List<Project3ViTour.Dtos.TourPlanDtos.ResultTourPlanDto>
+@{
+    ViewData["Title"] = "Tur Plan Listesi";
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .table thead th {
+            background-color: #f8fafc;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border: none;
+            padding: 15px;
+        }
+
+        .day-badge {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .btn-action {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .description-truncate {
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+}
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark mb-1">Tur Planları</h2>
+                <p class="text-muted">Tüm turların günlük rotalarını buradan yönetebilirsiniz.</p>
+            </div>
+            <a href="/TourPlan/CreateTourPlan" class="btn btn-primary shadow-sm" style="border-radius: 10px; padding: 10px 20px;">
+                <i class="bi bi-plus-lg me-2"></i>Yeni Plan Ekle
+            </a>
+        </div>
+
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Gün</th>
+                            <th>Tur Başlığı</th>
+                            <th>Plan Başlığı</th>
+                            <th>Açıklama</th>
+                            <th class="text-end">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><span class="day-badge">@item.DayNumber. Gün</span></td>
+                                <td class="fw-bold">@item.TourTitle</td> @* Not: Buraya Turun ismini getirmek için Include/Join gerekebilir *@
+                                <td>@item.Title</td>
+                                <td>
+                                    <div class="description-truncate text-muted" title="@item.Description">
+                                        @item.Description
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a href="/TourPlan/UpdateTourPlan/@item.TourPlanId" class="btn btn-outline-primary btn-action me-2">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <button onclick="deletePlan('@item.TourPlanId')" class="btn btn-outline-danger btn-action">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="80" class="mb-3 opacity-50" />
+                                <p class="text-muted">Henüz hiç plan eklenmemiş.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deletePlan(id) {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu tur planı kalıcı olarak silinecektir!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'Evet, Sil!',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/TourPlan/DeleteTourPlan/" + id;
+                }
+            })
+        }
+    </script>
+}
+

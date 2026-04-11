@@ -1,0 +1,337 @@
+﻿@model Project3ViTour.Dtos.ReservationDtos.UpdateReservationDto
+@{
+    ViewData["Title"] = "ReservasyonDüzenleme";
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("_TourHeadComponentPartial")
+
+<style>
+    :root {
+        --primary-green: #10b981;
+        --dark-green: #064e3b;
+        --bg-soft: #f0fdf4;
+    }
+
+    body {
+        background-color: #f8fafc;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .edit-wrapper {
+        max-width: 900px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* Üst Başlık Alanı */
+    .edit-header {
+        background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+        padding: 40px;
+        color: white;
+        position: relative;
+    }
+
+        .edit-header h2 {
+            font-weight: 800;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .edit-header p {
+            opacity: 0.8;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+    /* Form Alanı */
+    .edit-body {
+        padding: 40px;
+    }
+
+    .form-section-title {
+        color: var(--dark-green);
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid var(--bg-soft);
+        padding-bottom: 10px;
+    }
+
+    .custom-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .custom-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        background: #fbfcfd;
+    }
+
+        .custom-input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+            outline: none;
+            background: #fff;
+        }
+
+    /* Özet Kartı (Sağ tarafta veya altta bilgi amaçlı) */
+    .info-badge-box {
+        background: var(--bg-soft);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px dashed var(--primary-green);
+    }
+
+    .save-btn {
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        padding: 15px 35px;
+        border-radius: 12px;
+        font-weight: 700;
+        width: 100%;
+        transition: all 0.3s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .save-btn:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+        }
+
+    .back-link {
+        color: #64748b;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+    }
+
+    /* Toggle Switch Tasarımı */
+    .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f8fafc;
+        padding: 8px 15px;
+        border-radius: 50px;
+        border: 1px solid #e2e8f0;
+        width: fit-content;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 24px;
+        margin-bottom: 0; /* Label margin sıfırla */
+    }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary-green);
+    }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+
+    #status-text {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="edit-wrapper">
+            <div class="edit-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2>Rezervasyon Detayları</h2>
+                        <p>Bilgileri kontrol edebilir ve hatalı kısımları buradan güncelleyebilirsiniz.</p>
+                    </div>
+                    <i class="bi bi-pencil-square" style="font-size: 3rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+
+            <div class="edit-body">
+                <a href="javascript:history.back()" class="back-link">
+                    <i class="bi bi-arrow-left"></i> Listeye Geri Dön
+                </a>
+
+                <form asp-action="Update" asp-controller="Reservation" method="post">
+                    @* Gizli ID Alanları *@
+                    <input type="hidden" asp-for="ReservationId" />
+                    <input type="hidden" asp-for="TourId" />
+
+                    <div class="row g-4">
+                        @* Kişisel Bilgiler *@
+                        <div class="col-12">
+                            <div class="form-section-title">
+                                <i class="bi bi-person-circle"></i> Müşteri Bilgileri
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="custom-label">Ad Soyad</label>
+                            <input type="text" asp-for="NameSurname" class="custom-input" placeholder="Örn: Ali Yılmaz" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="custom-label">E-Posta Adresi</label>
+                            <input type="email" asp-for="Email" class="custom-input" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="custom-label">Telefon Numarası</label>
+                            <input type="tel" asp-for="Phone" class="custom-input" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="custom-label">Tur Tarihi</label>
+                            <input type="date" asp-for="TourDate" class="custom-input" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="custom-label">Durum</label>
+                            <div class="toggle-wrapper">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" asp-for="Status" id="statusSwitch">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span id="status-text">Pasif</span>
+                            </div>
+                        </div>
+
+                        @* Sayısal Bilgiler *@
+                        <div class="col-12 mt-5">
+                            <div class="form-section-title">
+                                <i class="bi bi-people"></i> Katılımcı Sayıları
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="custom-label">Yetişkin Sayısı</label>
+                            <input type="number" asp-for="AdultCount" class="custom-input" min="1" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="custom-label">Genç Sayısı</label>
+                            <input type="number" asp-for="YouthCount" class="custom-input" min="0" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="custom-label">Çocuk Sayısı</label>
+                            <input type="number" asp-for="ChildCount" class="custom-input" min="0" />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="custom-label">Adres / Notlar</label>
+                            <textarea asp-for="Address" class="custom-input" style="min-height: 100px;"></textarea>
+                        </div>
+
+                        @* Alt Bilgi ve Buton *@
+                        <div class="col-md-8">
+                            <div class="info-badge-box">
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-info-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                                    <span class="small text-muted">
+                                        Fiyatlandırma, katılımcı sayılarına göre otomatik olarak yeniden hesaplanacaktır.
+                                        Lütfen tüm bilgilerin doğruluğundan emin olun.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="save-btn">
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
+                                Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @await Component.InvokeAsync("_TourScriptComponentPartial")
+
+    <script>
+        const statusSwitch = document.getElementById('statusSwitch');
+        const statusText = document.getElementById('status-text');
+
+        function updateStatusText() {
+            if (statusSwitch.checked) {
+                statusText.textContent = "Aktif";
+                statusText.style.color = "#10b981"; // var(--primary-green)
+            } else {
+                statusText.textContent = "Pasif";
+                statusText.style.color = "#64748b"; // muted color
+            }
+        }
+
+        // Sayfa açıldığında mevcut duruma göre yazıyı ayarla
+        updateStatusText();
+
+        // Tıklandığında yazıyı güncelle
+        statusSwitch.addEventListener('change', updateStatusText);
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+﻿@using Project3ViTour.Dtos.DashboardDtos
+@using Project3ViTour.Dtos.ReservationDtos
+@using Project3ViTour.Dtos.ReviewDtos
+@model DashboardDto
+@{
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h4 class="fw-semibold mb-0">Dashboard</h4>
+            <p class="text-muted small mb-0">@DateTime.Now.ToString("MMMM yyyy", new System.Globalization.CultureInfo("tr-TR")) — Genel Özet</p>
+        </div>
+        <a href="/Dashboard/ExportPdf" class="btn btn-outline-primary btn-sm rounded-3">
+            <i class="bi bi-file-earmark-pdf me-1"></i> PDF İndir
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <a href="/Tour/TourList" class="text-decoration-none">
+                <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border h-100">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#E6F1FB;color:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-map-fill" style="font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <p class="fw-semibold fs-4 mb-0">@Model.TourCount</p>
+                        <p class="text-muted small mb-0">Toplam Tur</p>
+                        <p style="font-size:11px;color:#aaa;margin:0;">Aktif turlar</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-lg-3">
+            <a href="/Reservation/Index" class="text-decoration-none">
+                <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border h-100">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#EAF3DE;color:#3B6D11;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-calendar2-check-fill" style="font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <p class="fw-semibold fs-4 mb-0">@Model.ReservationCount</p>
+                        <p class="text-muted small mb-0">Rezervasyon</p>
+                        <p style="font-size:11px;color:#aaa;margin:0;">Toplam</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-lg-3">
+            <a href="/Review/Index" class="text-decoration-none">
+                <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border h-100">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#FAEEDA;color:#854F0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-chat-left-text-fill" style="font-size:20px;"></i>
+                    </div>
+                    <div>
+                        <p class="fw-semibold fs-4 mb-0">@Model.ReviewCount</p>
+                        <p class="text-muted small mb-0">Yorum</p>
+                        <p style="font-size:11px;color:#aaa;margin:0;">Toplam</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border h-100">
+                <div style="width:48px;height:48px;border-radius:12px;background:#EEEDFE;color:#534AB7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-cash-coin" style="font-size:20px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-4 mb-0">$@Model.TotalRevenue.ToString("F0")</p>
+                    <p class="text-muted small mb-0">Toplam Gelir</p>
+                    <p style="font-size:11px;color:#aaa;margin:0;">Tüm zamanlar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-12 col-lg-6">
+            <div class="bg-white rounded-4 border p-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <p class="fw-semibold small mb-0" style="color:#042C53;">Son Rezervasyonlar</p>
+                    <a href="/Reservation/Index" class="text-decoration-none" style="font-size:12px;color:#185FA5;">Tümünü Gör →</a>
+                </div>
+                @foreach (var item in Model.LastReservations)
+                {
+                    var initials = string.Join("", item.NameSurname.Split(' ').Take(2).Select(x => x[0]));
+                    <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width:32px;height:32px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;">@initials</div>
+                            <div>
+                                <p class="mb-0 small fw-semibold">@item.NameSurname</p>
+                                <p class="mb-0" style="font-size:11px;color:#aaa;">@item.TourTitle · @item.TourDate.ToString("dd.MM.yyyy")</p>
+                            </div>
+                        </div>
+                        <span class="fw-semibold small" style="color:#185FA5;">$@item.TotalPrice.ToString("F0")</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="bg-white rounded-4 border p-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <p class="fw-semibold small mb-0" style="color:#042C53;">Son Yorumlar</p>
+                    <a href="/Review/Index" class="text-decoration-none" style="font-size:12px;color:#185FA5;">Tümünü Gör →</a>
+                </div>
+                @foreach (var item in Model.LastReviews)
+                {
+                    var initials = string.Join("", item.NameSurname.Split(' ').Take(2).Select(x => x[0]));
+                    <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width:32px;height:32px;border-radius:50%;background:#FAEEDA;color:#854F0B;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;">@initials</div>
+                            <div>
+                                <p class="mb-0 small fw-semibold">@item.NameSurname</p>
+                                <p class="mb-0 text-truncate" style="font-size:11px;color:#aaa;max-width:200px;">@item.Detail</p>
+                            </div>
+                        </div>
+                        <span style="color:#BA7517;font-size:13px;">
+                            @string.Concat(Enumerable.Repeat("★", item.Score))@string.Concat(Enumerable.Repeat("☆", 5 - item.Score))
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-12">
+            <div class="bg-white rounded-4 border p-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <p class="fw-semibold small mb-0" style="color:#042C53;">En Çok Rezervasyon Alan Turlar</p>
+                </div>
+                @foreach (var item in Model.TopTours)
+                {
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="small">@item.TourTitle</span>
+                            <span class="small text-muted">@item.ReservationCount rezervasyon</span>
+                        </div>
+                        <div style="height:6px;background:#f0f0f0;border-radius:3px;">
+                            <div style="height:6px;background:#185FA5;border-radius:3px;width:@item.Percent%;"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

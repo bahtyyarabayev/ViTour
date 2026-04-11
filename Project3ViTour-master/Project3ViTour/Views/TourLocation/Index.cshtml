@@ -1,0 +1,81 @@
+﻿@model List<Project3ViTour.Dtos.TourLocationDtos.ResultTourLocationDto>
+
+@{
+    ViewData["Title"] = "Tur Lokasyon Listesi";
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-semibold mb-0">Lokasyon Listesi</h4>
+        <a asp-action="Create" asp-controller="TourLocation" class="btn btn-primary btn-sm px-4">
+            + Yeni Lokasyon
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-borderless align-middle bg-white rounded-4 shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-muted small fw-semibold">Resim</th>
+                    <th class="text-muted small fw-semibold">Açıklama</th>
+                    <th class="text-muted small fw-semibold">Tur Adı</th>
+                    <th class="text-muted small fw-semibold">Maddeler</th>
+                    <th class="text-muted small fw-semibold">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.ImageUrl" alt="lokasyon"
+                             style="width:60px; height:60px; object-fit:cover; border-radius:8px;" />
+                        </td>
+                        <td>
+                            <p class="mb-0 small text-truncate" style="max-width:250px;">
+                                @item.Description
+                            </p>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border small">@item.TourTitle</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1">
+                                @if (item.Items != null)
+                                {
+                                    @foreach (var madde in item.Items)
+                                    {
+                                        <span class="badge bg-light text-dark border small">@madde</span>
+                                    }
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit" asp-controller="TourLocation"
+                               asp-route-id="@item.TourLocationId"
+                               class="btn btn-outline-secondary btn-sm">
+                                    Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-controller="TourLocation"
+                               asp-route-id="@item.TourLocationId"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Silmek istediğinize emin misiniz?')">
+                                    Sil
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Count == 0)
+        {
+            <div class="text-center text-muted py-5">
+                <p>Henüz lokasyon eklenmemiş.</p>
+            </div>
+        }
+    </div>
+</div>

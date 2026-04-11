@@ -1,0 +1,68 @@
+﻿@model Project3ViTour.Dtos.ReviewDtos.GetReviewByIdDto
+@{
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+    ViewData["Title"] = "Yorum Detay";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-semibold mb-0">Yorum Detayı</h4>
+                    <a asp-action="Index" asp-controller="Review"
+                       class="btn btn-outline-secondary btn-sm">
+                        Geri Dön
+                    </a>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom">
+                    <p class="text-muted small mb-1">Ad Soyad</p>
+                    <p class="fw-semibold mb-0">@Model.NameSurname</p>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom">
+                    <p class="text-muted small mb-1">Tur Adı</p>
+                    <p class="mb-0">@Model.TourTitle</p>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom">
+                    <p class="text-muted small mb-1">Puan</p>
+                    <span class="badge bg-warning text-dark fs-6">@Model.Score ★</span>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom">
+                    <p class="text-muted small mb-1">Tarih</p>
+                    <p class="mb-0">@Model.ReviewDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</p>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom">
+                    <p class="text-muted small mb-1">Durum</p>
+                    @if (Model.Status)
+                    {
+                        <span class="badge bg-success">Onaylı</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Bekliyor</span>
+                    }
+                </div>
+
+                <div class="mb-4">
+                    <p class="text-muted small mb-1">Yorum</p>
+                    <p class="mb-0">@Model.Detail</p>
+                </div>
+
+                <a asp-action="Delete" asp-controller="Review"
+                   asp-route-id="@Model.ReviewId"
+                   class="btn btn-outline-danger btn-sm w-100"
+                   onclick="return confirm('Yorumu silmek istediğinize emin misiniz?')">
+                    Yorumu Sil
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+

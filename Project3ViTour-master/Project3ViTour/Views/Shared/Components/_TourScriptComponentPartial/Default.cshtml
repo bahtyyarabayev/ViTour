@@ -1,0 +1,112 @@
+﻿<a id="scroll-top" class="button-go"></a>
+<script src="/vitour/app/js/jquery.min.js"></script>
+<script src="/vitour/app/js/jquery.nice-select.min.js"></script>
+<script src="/vitour/app/js/bootstrap.min.js"></script>
+<script src="/vitour/app/js/swiper-bundle.min.js"></script>
+<script src="/vitour/app/js/swiper.js"></script>
+<script src="/vitour/app/js/plugin.js"></script>
+<script src="/vitour/app/js/jquery.fancybox.js"></script>
+<script src="/vitour/app/js/price-ranger.js"></script>
+<script src="/vitour/app/js/shortcodes.js"></script>
+<script src="/vitour/app/js/main.js"></script>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'tr',
+            includedLanguages: 'tr,en',
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    (function () {
+        function initBooking(form) {
+            var wrap = form.querySelector('.input-wrap-sellect');
+            if (!wrap) return;
+            var price = parseFloat(wrap.dataset.price);
+            var childPrice = price * 0.70;
+            var youthPrice = price * 0.85;
+            var adultPrice = price;
+            var selects = wrap.querySelectorAll('.nice-select');
+            var childSelect = selects[0];
+            var youthSelect = selects[1];
+            var adultSelect = selects[2];
+            var totalEl = form.querySelector('.total-price');
+
+            function updateTotal() {
+                var childCount = parseInt(childSelect.querySelector('.current').textContent) || 0;
+                var youthCount = parseInt(youthSelect.querySelector('.current').textContent) || 0;
+                var adultCount = parseInt(adultSelect.querySelector('.current').textContent) || 0;
+                var total = (childCount * childPrice) + (youthCount * youthPrice) + (adultCount * adultPrice);
+                totalEl.textContent = '$' + total.toFixed(2);
+            }
+
+            wrap.addEventListener('click', function () {
+                setTimeout(updateTotal, 100);
+            });
+
+            updateTotal();
+        }
+
+        document.querySelectorAll('.form-book-tour').forEach(function (form) {
+            initBooking(form);
+        });
+
+        document.querySelectorAll('[data-bs-toggle="pill"]').forEach(function (tab) {
+            tab.addEventListener('shown.bs.tab', function () {
+                document.querySelectorAll('.form-book-tour').forEach(function (form) {
+                    initBooking(form);
+                });
+            });
+        });
+    })();
+</script>
+<script>
+    (function () {
+        var btn = document.getElementById('showAllReviews');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.review-hidden').forEach(function (el) {
+                    el.style.display = 'flex';
+                });
+                btn.style.display = 'none';
+            });
+        }
+    })();
+</script>
+<script>
+    (function () {
+        var stars = document.querySelectorAll('#starRating .icon-Star');
+        var scoreInput = document.getElementById('scoreInput');
+        if (!stars.length) return;
+
+        // Başta hepsi boş
+        stars.forEach(function (star) {
+            star.style.color = '#ccc';
+        });
+
+        stars.forEach(function (star) {
+            star.addEventListener('click', function () {
+                var val = parseInt(this.getAttribute('data-value'));
+                scoreInput.value = val;
+                stars.forEach(function (s, idx) {
+                    s.style.color = idx < val ? '#f5a623' : '#ccc';
+                });
+            });
+            star.addEventListener('mouseover', function () {
+                var val = parseInt(this.getAttribute('data-value'));
+                stars.forEach(function (s, idx) {
+                    s.style.color = idx < val ? '#f5a623' : '#ccc';
+                });
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', function () {
+            var val = parseInt(scoreInput.value) || 0;
+            stars.forEach(function (s, idx) {
+                s.style.color = idx < val ? '#f5a623' : '#ccc';
+            });
+        });
+    })();
+</script>

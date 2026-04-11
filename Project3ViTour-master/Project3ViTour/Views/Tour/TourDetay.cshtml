@@ -1,0 +1,757 @@
+﻿@model Project3ViTour.Dtos.TourDtos.GetTourByIdDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+
+@await Component.InvokeAsync("_TourHeadComponentPartial")
+
+<body class="body header-fixed ">
+    <style>
+        .review-hidden {
+            display: none;
+        }
+
+        .location-img-wrapper {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .location-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+    </style>
+
+    <div class="preload preload-container">
+        <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+        </svg>
+    </div>
+
+    <!-- /preload -->
+
+    <div id="wrapper">
+        <div id="pagee" class="clearfix">
+            @await Component.InvokeAsync("_TourHeaderComponentPartial")
+            <main id="main">
+
+                <section>
+                    <div class="tf-container full">
+                        <div class="row">
+                            <div class="col-md-12" style="padding: 0;">
+                                <img src="/vitour/banner2.jpg"
+                                     alt="image"
+                                     style="width: 100%;
+                            height: 300px;
+                            object-fit: cover;
+                            object-position: center;">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tour-single">
+                    <div class="tf-container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ul class="nav justify-content-between tab-tour-single" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="pills-information-tab" data-bs-toggle="pill"
+                                                data-bs-target="#pills-information" type="button" role="tab"
+                                                aria-controls="pills-information" aria-selected="true">
+                                            <i class="icon-Vector-51"></i> Information
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pills-tour-planing-tab" data-bs-toggle="pill"
+                                                data-bs-target="#pills-tour-planing" type="button" role="tab"
+                                                aria-controls="pills-tour-planing" aria-selected="false">
+                                            <i class="icon-destination-2-1"></i> Tour Planing
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pills-location-share-tab" data-bs-toggle="pill"
+                                                data-bs-target="#pills-location-share" type="button" role="tab"
+                                                aria-controls="pills-location-share" aria-selected="false">
+                                            <i class="icon-map-1"></i> Location share
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pills-reviews-tab" data-bs-toggle="pill"
+                                                data-bs-target="#pills-reviews" type="button" role="tab"
+                                                aria-controls="pills-reviews" aria-selected="false">
+                                            <i class="icon-favourite-1"></i> Reviews
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pills-shot-gallery-tab" data-bs-toggle="pill"
+                                                data-bs-target="#pills-shot-gallery" type="button" role="tab"
+                                                aria-controls="pills-shot-gallery" aria-selected="false">
+                                            <i class="icon-image-gallery-1"></i> Shot Gallery
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row pd-main">
+                            <div class="col-lg-12">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-information" role="tabpanel"
+                                         aria-labelledby="pills-information-tab" tabindex="0">
+                                        <div class="row mb-50">
+                                            <div class="col-lg-12">
+                                                <div class="inner-heading-wrap flex-two">
+                                                    <div class="inner-heading">
+                                                        <span class="feature">@Model.Badge</span>
+                                                        <h2 class="title">@Model.Title</h2>
+                                                        <ul class="flex-three list-wrap-heading">
+                                                            <li class="flex-three">
+                                                                <i class="icon-time-left"></i>
+                                                                <span>5 Hours</span>
+                                                            </li>
+                                                            <li class="flex-three">
+                                                                <i class="icon-user"></i>
+                                                                <span style="font-weight:bold; color:#000;">Kapasite: @Model.Capacity</span>
+                                                            </li>
+                                                            <li class="flex-three">
+                                                                <i class="icon-18"></i>
+                                                                <span>@Model.Location</span>
+                                                            </li>
+
+
+                                                        </ul>
+
+                                                    </div>
+                                                    <div class="inner-price">
+                                                        <p class="price-sale text-main">
+                                                            <span style="font-size: 0.9em; font-weight: normal;">Tur Ücreti:</span> $@Model.Price
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        @await Component.InvokeAsync("_TourDetailsGalleryComponentPartial", new { id = Model.TourId, take = 3 })
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="information-content-tour">
+                                                    <div class="description-wrap mb-40">
+                                                        <span class="description">Açıklama:</span>
+                                                        <span>
+                                                          @Model.Description
+                                                        </span>
+                                                    </div>
+                                                    <div class="description-wrap mb-40">
+                                                        <span class="description">Advance Facilities</span>
+                                                        <p class="des">
+                                                            Leave your guidebooks at home and dive into the
+                                                            local cultures that make each destination so special. We’ll
+                                                            connect you with our exclusive experiences. Each trip is
+                                                            carefully crafted to let enjoy your vacation.
+                                                        </p>
+                                                    </div>     
+                                                    <div class="expect-wrap mb-70">
+                                                        <h4 class="title mb-40">Included/Exclude</h4>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <ul class="listing-clude">
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>Pick and Drop Services</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>1 Meal Per Day</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>Cruise Dinner & Music Event</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>
+                                                                            Visit 7 Best Places in the City With Group
+                                                                        </p>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <ul class="listing-clude">
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>Pick and Drop Services</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>1 Meal Per Day</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>Cruise Dinner & Music Event</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-Vector-7"></i>
+                                                                        <p>
+                                                                            Visit 7 Best Places in the City With Group
+                                                                        </p>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="expect-wrap">
+                                                        <h4 class="title mb-40">Tour Amenities</h4>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <ul class="listing-icon">
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Air Conditioning</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Microwave</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Central Heating</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Central Heating</p>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <ul class="listing-icon">
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Laundry</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Outdoor Shower</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Swimming Pool</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Wifi</p>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <ul class="listing-icon">
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Window Covering</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Refrigerator</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Alarm System</p>
+                                                                    </li>
+                                                                    <li class="flex-three">
+                                                                        <i class="icon-10"></i>
+                                                                        <p>Window Coverings</p>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="side-bar-right">
+                                                    @await Component.InvokeAsync("_TourTicketComponentPartial", new { tour = Model })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-tour-planing" role="tabpanel"
+                                         aria-labelledby="pills-tour-planing-tab" tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @await Component.InvokeAsync("_TourPlaningComponentPartial", new { id = Model.TourId })
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="side-bar-right">
+                                                    @await Component.InvokeAsync("_TourTicketComponentPartial", new { tour = Model })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-location-share" role="tabpanel"
+                                         aria-labelledby="pills-location-share-tab" tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="localtion-content-tour">
+                                                    @if (!string.IsNullOrEmpty(Model.TourLocation?.ImageUrl))
+                                                    {
+                                                        <div class="location-img-wrapper mb-3">
+                                                            <img src="@Model.TourLocation.ImageUrl" alt="lokasyon resmi" class="location-img" />
+                                                        </div>
+                                                    }
+                                                    <div class="flex-three map-list mb-3">
+                                                        <i class="icon-18"></i>
+                                                        <p>@Model.Location</p>
+                                                    </div>
+                                                    <h3 class="title-location">Tanıtım:</h3>
+                                                    <p class="des mb-22">
+                                                        @Model.TourLocation?.Description
+                                                    </p>
+                                                    <ul class="listing-des">
+                                                        @if (Model.TourLocation?.Items != null)
+                                                        {
+                                                            @foreach (var item in Model.TourLocation.Items)
+                                                            {
+                                                                <li>
+                                                                    <p>@item</p>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="side-bar-right">
+                                                    @await Component.InvokeAsync("_TourTicketComponentPartial", new { tour = Model })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-reviews" role="tabpanel"
+                                         aria-labelledby="pills-reviews-tab" tabindex="0">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="review-content-tour">
+                                                    @{
+                                                        int reviewCount = Model.Reviews != null ? Model.Reviews.Count : 0;
+                                                        double avgScore2 = reviewCount > 0
+                                                        ? Math.Round(Model.Reviews.Average(r => r.Score), 1)
+                                                        : 0;
+                                                        double percent = (avgScore2 / 5) * 100;
+                                                    }
+
+                                                    <div class="custom-review mb-80">
+                                                        <h4 class="title-review mb-37">Customer Review</h4>
+                                                        <div class="flex card-list">
+                                                            <div class="card-review">
+                                                                <div class="percent">
+                                                                    <svg>
+                                                                        <circle cx="105" cy="105" r="100"></circle>
+                                                                        <circle cx="105" cy="105" r="100" style="--percent: @percent"></circle>
+                                                                    </svg>
+                                                                    <div class="number center">
+                                                                        <span>Overall Ratings</span>
+                                                                        <h5 class="number-reating">@avgScore2</h5>
+                                                                        <span>Out of 5</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="review-list">
+                                                                <div class="review-list-item mb-40">
+                                                                    <span class="comfort">Genel Puan</span>
+                                                                    <div class="flex-two">
+                                                                        <span class="reating">Rating @avgScore2</span>
+                                                                        <div class="start">
+                                                                            @for (int i = 0; i < Math.Round(avgScore2); i++)
+                                                                            {
+                                                                                <i class="icon-Star"></i>
+                                                                            }
+                                                                            <span>@avgScore2</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="5">
+                                                                        <div class="progress-bar" style="width: @percent%"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="review-list-item mb-40">
+                                                                    <span class="comfort">Toplam Yorum</span>
+                                                                    <div class="flex-two">
+                                                                        <span class="reating">@reviewCount yorum</span>
+                                                                    </div>
+                                                                    <div class="progress" role="progressbar">
+                                                                        <div class="progress-bar" style="width: 100%"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="client-review mb-80">
+                                                        <div class="flex-two mb-50 inner-header">
+                                                            <h4 class="title-review">Client's Review</h4>
+                                                            <div class="client-review flex">
+                                                                <span>@reviewCount Reviews</span>
+                                                                <div class="start">
+                                                                    @for (int i = 0; i < Math.Round(avgScore2); i++)
+                                                                    {
+                                                                        <i class="icon-Star"></i>
+                                                                    }
+                                                                </div>
+                                                                <span>(@avgScore2 out of 5)</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="client-review-list">
+                                                            @if (reviewCount == 0)
+                                                            {
+                                                                <p>Henüz yorum yok.</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                int count = 0;
+                                                                foreach (var review in Model.Reviews)
+                                                                {
+                                                                    string hiddenClass = count >= 3 ? "review-hidden" : "";
+                                                                    count++;
+                                                                    <div class="client-review-item flex @hiddenClass">
+                                                                        <div class="avata" style="width:50px; height:50px; border-radius:50%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:16px; color:#555; flex-shrink:0;">
+                                                                            @review.NameSurname[0]
+                                                                        </div>
+                                                                        <div class="content">
+                                                                            <span class="name">@review.NameSurname</span>
+                                                                            <p class="des">@review.Detail</p>
+                                                                            <div class="start">
+                                                                                @for (int i = 0; i < review.Score; i++)
+                                                                                {
+                                                                                    <i class="icon-Star"></i>
+                                                                                }
+                                                                                <span>@review.Score</span>
+                                                                            </div>
+                                                                            <span class="date">@review.ReviewDate.ToString("dd MMM yyyy")</span>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+
+                                                        @if (reviewCount > 3)
+                                                        {
+                                                            <button id="showAllReviews" style="margin-top:16px; cursor:pointer; background:#4fc3f7; border:none; border-radius:6px; padding:8px 20px; color:#fff; font-weight:600;">
+                                                                Tüm Yorumları Göster (@reviewCount)
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                    <div class="form-review bg-1">
+                                                        <h4 class="title-review mb-60">Yorum Yazınız:</h4>
+                                                        <div class="inner-review flex-one mb-50">
+                                                            <div class="inner-review-item">
+                                                                <span class="text-review">Puan*</span>
+                                                                <div class="start" id="starRating">
+                                                                    @for (int i = 1; i <= 5; i++)
+                                                                    {
+                                                                        <i class="icon-Star" data-value="@i" style="cursor:pointer;"></i>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <form asp-controller="Tour" asp-action="CreateReview" method="post">
+                                                            <input type="hidden" name="Status" value="true" />
+                                                            <input type="hidden" name="ReviewDate" value="@DateTime.Now.ToString("o")" />
+                                                            <input type="hidden" name="Score" id="scoreInput" value="0" />
+
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <fieldset class="relative input-wrap mb-37">
+                                                                        <i class="icon-user-1-1"></i>
+                                                                        <input type="text" placeholder="Ad Soyad" name="NameSurname" required />
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <fieldset class="relative input-wrap mb-37">
+                                                                        <i class="icon-content"></i>
+                                                                        <select name="TourId" class="form-select" required>
+                                                                            <option value="">Tur Seçin</option>
+                                                                            @foreach (var tour in ViewBag.Tours as List<Project3ViTour.Dtos.TourDtos.ResultTourDto> ?? new List<Project3ViTour.Dtos.TourDtos.ResultTourDto>())
+                                                                            {
+                                                                                <option value="@tour.TourId">@tour.Title</option>
+                                                                            }
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <fieldset class="relative input-wrap mb-37">
+                                                                        <i class="icon-content"></i>
+                                                                        <textarea name="Detail" rows="10" cols="50" placeholder="Yorumunuzu yazın" required></textarea>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <div class="checkbox mb-60">
+                                                                        <input id="check-review" type="checkbox" name="check" value="check" required />
+                                                                        <label for="check-review">
+                                                                            Şartlar ve Koşulları, İade Politikasını ve Gizlilik Politikasını kabul ediyorum.
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <button type="submit" class="submit">Yorum Gönder</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="side-bar-right">
+                                                    @await Component.InvokeAsync("_TourTicketComponentPartial", new { tour = Model })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-shot-gallery" role="tabpanel" aria-labelledby="pills-shot-gallery-tab" tabindex="0">
+                                        <div class="row">
+                                            @* 👈 Mutlaka bir row açmalısın *@
+
+                                            @* SOL TARAF: Galeri (Geniş alan) *@
+                                            <div class="col-lg-8">
+                                                @await Component.InvokeAsync("_TourDetailsGalleryComponentPartial", new { id = Model.TourId })
+                                            </div>
+
+                                            @* SAĞ TARAF: Bilet Paneli (Dar alan) *@
+                                            <div class="col-lg-4">
+                                                <div class="side-bar-right">
+                                                    @await Component.InvokeAsync("_TourTicketComponentPartial", new { tour = Model })
+                                                </div>
+                                            </div>
+
+                                        </div> @* 👈 row burada kapanıyor *@
+                                    </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </main>
+
+            <footer class="footer footer-style1">
+                <div class="tf-container">
+                    <div class="footer-main">
+                        <div class="footer-logo">
+                            <div class="logo-footer">
+                                <img src="./assets/images/logo2.png" alt="">
+                            </div>
+                            <p class="des-footer">
+                                The world’s first and largest digital market
+                                for crypto collectibles and non-fungible
+                            </p>
+                            <ul class="footer-info">
+                                <li class="flex-three">
+                                    <i class="icon-noun-mail-5780740-1"></i>
+                                    <p>Info@webmail.com</p>
+                                </li>
+                                <li class="flex-three">
+                                    <i class="icon-Group-9"></i>
+                                    <p>684 555-0102 490</p>
+                                </li>
+                                <li class="flex-three">
+                                    <i class="icon-Layer-19"></i>
+                                    <p>6391 Elgin St. Celina, NYC 10299</p>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="footer-service">
+                            <h5 class="title">Services Req</h5>
+
+                            <ul class="footer-menu">
+                                <li>
+                                    <a href="about-us.html">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="gallery.html">Gallery</a>
+                                </li>
+                                <li>
+                                    <a href="team.html">Our Team</a>
+                                </li>
+                                <li>
+                                    <a href="blog.html">Blog Insights</a>
+                                </li>
+                                <li>
+                                    <a href="contact-us.html">Contact</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="footer-gallery">
+                            <h5 class="title">Gallery</h5>
+                            <div class="gallery-img">
+                                @foreach (var image in ViewBag.Images as List<Project3ViTour.Dtos.TourImageDtos.ResultGalleryImageDto> ?? new List<Project3ViTour.Dtos.TourImageDtos.ResultGalleryImageDto>())
+                                {
+                                    <a href="@image.ImageUrl" data-fancybox="gallery">
+                                        <img src="@image.ImageUrl" alt="image gallery">
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                        <div class="footer-newsletter">
+                            <h5 class="title">Newsletter</h5>
+                            <form action="/" id="footer-form">
+                                <div class="input-wrap flex-three">
+                                    <input type="email" placeholder="Enter Email Adress">
+                                    <button type="submit"><i class="icon-paper-plane"></i></button>
+                                </div>
+                                <div class="check-form flex-three">
+                                    <i class="icon-Vector-121"></i>
+                                    <p>I agree to all your terms and policies</p>
+                                </div>
+
+                            </form>
+                            <ul class="social-ft flex-three">
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-icon-2"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-x"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-8"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-2"></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <div class="row footer-bottom">
+                        <div class="col-md-6">
+                            <p class="copy-right">Copyright © 2026 by Themesflat. All Rights Reserved</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social flex-six">
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-icon-2"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-x"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-icon_03"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="icon-2"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- Bottom -->
+        </div>
+        <!-- /#page -->
+    </div>
+
+    <!-- Modal Popup Bid -->
+
+    <a id="scroll-top" class="button-go"></a>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+        <div class="offcanvas-header">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="logo-canvas">
+                <img src="./assets/images/logo.png" alt="image">
+            </div>
+            <p class="des">
+                The world’s first and largest digital market
+                for crypto collectibles and non-fungible
+            </p>
+            <ul class="canvas-info">
+                <li class="flex-three">
+                    <i class="icon-noun-mail-5780740-1"></i>
+                    <p>Info@webmail.com</p>
+                </li>
+                <li class="flex-three">
+                    <i class="icon-Group-9"></i>
+                    <p>684 555-0102 490</p>
+                </li>
+                <li class="flex-three">
+                    <i class="icon-Layer-19"></i>
+                    <p>6391 Elgin St. Celina, NYC 10299</p>
+                </li>
+            </ul>
+            <ul class="social flex-three">
+                <li>
+                    <a href="#">
+                        <i class="icon-icon-2"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-x"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-8"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-6"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    @await Component.InvokeAsync("_TourScriptComponentPartial")
+    
+</body>
+
+</html>

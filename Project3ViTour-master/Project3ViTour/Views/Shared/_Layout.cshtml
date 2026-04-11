@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Project3ViTour</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Project3ViTour.styles.css" asp-append-version="true" />
+    <style>
+        .lang-select {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-current {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none !important;
+            border: 1px solid rgba(0,0,0,0.15) !important;
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            color: #333 !important;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+            .lang-current:hover {
+                background: rgba(0,0,0,0.05) !important;
+            }
+
+        .lang-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .lang-arrow {
+            font-size: 9px;
+            opacity: 0.6;
+            font-style: normal;
+            transition: transform 0.2s;
+        }
+
+        .lang-select.open .lang-arrow {
+            transform: rotate(180deg);
+        }
+
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            min-width: 140px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            list-style: none;
+            margin: 0;
+            padding: 4px 0;
+            z-index: 9999;
+        }
+
+        .lang-select.open .lang-dropdown {
+            display: block;
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            transition: background 0.15s;
+        }
+
+            .lang-option:hover {
+                background: #f5f5f5;
+            }
+
+            .lang-option.selected {
+                font-weight: 600;
+                background: #f0f0f0;
+             }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Project3ViTour</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - Project3ViTour - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

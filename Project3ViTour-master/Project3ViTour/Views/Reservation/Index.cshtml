@@ -1,0 +1,137 @@
+﻿@model List<Project3ViTour.Dtos.ReservationDtos.ResultReservationDto>
+@{
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+    ViewData["Title"] = "Rezervasyonlar";
+    var totalPrice = Model.Count > 0 ? Model.Sum(x => x.TotalPrice).ToString("F2") : "0";
+}
+
+<div class="container mt-5">
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#E6F1FB;color:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-calendar2-check-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@Model.Count</p>
+                    <p class="text-muted small mb-0">Toplam Rezervasyon</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#EAF3DE;color:#3B6D11;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-cash-coin" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">$@totalPrice</p>
+                    <p class="text-muted small mb-0">Toplam Gelir</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#FAEEDA;color:#854F0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-people-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@Model.Sum(x => x.ChildCount + x.YouthCount + x.AdultCount)</p>
+                    <p class="text-muted small mb-0">Toplam Kişi</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#EEEDFE;color:#534AB7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-hourglass-split" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@Model.Count(x => !x.Status)</p>
+                    <p class="text-muted small mb-0">Bekleyen</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold mb-0">Rezervasyon Listesi</h5>
+    </div>
+
+    <div class="table-responsive rounded-4 border">
+        <table class="table table-borderless align-middle mb-0 bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-muted small fw-semibold">Kişi</th>
+                    <th class="text-muted small fw-semibold">Tur</th>
+                    <th class="text-muted small fw-semibold">Tarih</th>
+                    <th class="text-muted small fw-semibold">Kişi Sayısı</th>
+                    <th class="text-muted small fw-semibold">Tutar</th>
+                    <th class="text-muted small fw-semibold">Durum</th>
+                    <th class="text-muted small fw-semibold">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var initials = string.Join("", item.NameSurname.Split(' ').Take(2).Select(x => x[0]));
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div style="width:32px;height:32px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                    @initials
+                                </div>
+                                <div>
+                                    <p class="fw-semibold small mb-0">@item.NameSurname</p>
+                                    <p class="text-muted" style="font-size:11px;margin:0;">@item.Email</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="small">@item.TourTitle</td>
+                        <td class="small text-muted">@item.TourDate.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <div style="font-size:11px;color:var(--bs-secondary);">
+                                <span>Ç:@item.ChildCount</span>
+                                <span class="mx-1">G:@item.YouthCount</span>
+                                <span>Y:@item.AdultCount</span>
+                            </div>
+                        </td>
+                        <td class="fw-semibold small">$@item.TotalPrice.ToString("F2")</td>
+                        <td>
+                            @if (item.Status)
+                            {
+                                <span class="badge bg-success">Onaylı</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Bekliyor</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Detail" asp-controller="Reservation"
+                               asp-route-id="@item.ReservationId"
+                               class="btn btn-outline-secondary btn-sm">
+                                    Detay
+                                </a>
+                                <a asp-action="Delete" asp-controller="Reservation"
+                               asp-route-id="@item.ReservationId"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Rezervasyonu silmek istediğinize emin misiniz?')">
+                                    Sil
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Count == 0)
+        {
+            <div class="text-center text-muted py-5">
+                <p>Henüz rezervasyon bulunmamaktadır.</p>
+            </div>
+        }
+    </div>
+</div>

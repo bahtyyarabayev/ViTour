@@ -1,0 +1,127 @@
+﻿<div class="sidebar-widget">
+    <h6 class="block-heading">Book This Tour</h6>
+    <form action="/" class="form-book-tour">
+        <div class="input-wrap-sellect mb-30" data-price="@Model.Price">
+            <div class="flex-two mb-10" style="align-items:center;">
+                <p style="font-size:14px;margin:0;">Çocuk (0-12) $@((Model.Price * 0.70m).ToString("F2"))</p>
+                <div class="nice-select" tabindex="0" style="height:32px;line-height:30px;font-size:14px;min-width:55px;padding:0 25px 0 8px;">
+                    <span class="current">0</span>
+                    <ul class="list">
+                        <li data-value="0" class="option selected focus">0</li>
+                        <li data-value="1" class="option">1</li>
+                        <li data-value="2" class="option">2</li>
+                        <li data-value="3" class="option">3</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex-two mb-10" style="align-items:center;">
+                <p style="font-size:14px;margin:0;">Genç (13-17) $@((Model.Price * 0.85m).ToString("F2"))</p>
+                <div class="nice-select" tabindex="0" style="height:32px;line-height:30px;font-size:14px;min-width:55px;padding:0 25px 0 8px;">
+                    <span class="current">0</span>
+                    <ul class="list">
+                        <li data-value="0" class="option selected focus">0</li>
+                        <li data-value="1" class="option">1</li>
+                        <li data-value="2" class="option">2</li>
+                        <li data-value="3" class="option">3</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex-two" style="align-items:center;">
+                <p style="font-size:14px;margin:0;">Yetişkin (17+) $@Model.Price.ToString("F2")</p>
+                <div class="nice-select" tabindex="0" style="height:32px;line-height:30px;font-size:14px;min-width:55px;padding:0 25px 0 8px;">
+                    <span class="current">0</span>
+                    <ul class="list">
+                        <li data-value="0" class="option selected focus">0</li>
+                        <li data-value="1" class="option">1</li>
+                        <li data-value="2" class="option">2</li>
+                        <li data-value="3" class="option">3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="flex-two mb-40">
+            <span class="label">Total:</span>
+            <span class="total text-main total-price">$@Model.Price.ToString("F2")</span>
+        </div>
+        <button type="button" onclick="goToReservation()">Rezervasyon Yap</button>
+    </form>
+</div>
+<div class="sidebar-widget">
+    <h6 class="block-heading">Book With Confidence</h6>
+    <ul class="category-confidence">
+        <li class="flex-three">
+            <i class="icon-customer-service-1"></i>
+            <span>Customer care available 24/7</span>
+        </li>
+        <li class="flex-three">
+            <i class="icon-Vector-6"></i>
+            <span>Hand-picked Tours & Activities</span>
+        </li>
+        <li class="flex-three">
+            <i class="icon-insurance-1"></i>
+            <span>Free Travel Insureance</span>
+        </li>
+        <li class="flex-three">
+            <i class="icon-price-tag-1-1"></i>
+            <span>No-hassle best price guarantee</span>
+        </li>
+    </ul>
+</div>
+<div class="sidebar-widget">
+    <h4 class="block-heading">Recent Reviews</h4>
+    <div class="recent-post-list">
+        @if (Model.Reviews == null || Model.Reviews.Count == 0)
+        {
+            <p>Henüz yorum yok.</p>
+        }
+        else
+        {
+            int count = 0;
+            foreach (var review in Model.Reviews)
+            {
+                if (count >= 3) break;
+                count++;
+                <div class="list-recent flex-three">
+                    <div class="recent-info">
+                        <div class="start">
+                            @for (int i = 0; i < review.Score; i++)
+                            {
+                                <i class="icon-Star"></i>
+                            }
+                        </div>
+                        <h4 class="title">@review.NameSurname</h4>
+                        <p>@review.Detail</p>
+                        <span>@review.ReviewDate.ToString("dd.MM.yyyy")</span>
+                        <small style="color:#888;">Tur: @Model.Title</small>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script>
+    function goToReservation() {
+        var form = event.target.closest('.form-book-tour');
+        var wrap = form.querySelector('.input-wrap-sellect');
+        var price = parseFloat(wrap.dataset.price);
+        var selects = wrap.querySelectorAll('.nice-select');
+        var childCount = parseInt(selects[0].querySelector('.current').textContent) || 0;
+        var youthCount = parseInt(selects[1].querySelector('.current').textContent) || 0;
+        var adultCount = parseInt(selects[2].querySelector('.current').textContent) || 0;
+        var totalPrice = (childCount * price * 0.70) + (youthCount * price * 0.85) + (adultCount * price);
+
+        if (childCount + youthCount + adultCount === 0) {
+            alert('Lütfen en az bir kişi seçiniz.');
+            return;
+        }
+
+        var tourId = '@Model.TourId';
+        var url = '/Reservation/Create?tourId=' + tourId +
+            '&childCount=' + childCount +
+            '&youthCount=' + youthCount +
+            '&adultCount=' + adultCount +
+            '&totalPrice=' + totalPrice.toFixed(2);
+
+        window.location.href = url;
+    }
+</script>

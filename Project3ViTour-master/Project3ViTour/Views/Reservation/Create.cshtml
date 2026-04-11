@@ -1,0 +1,501 @@
+﻿@{
+    Layout = null;
+    
+    int childCount = (int)(ViewBag.ChildCount ?? 0);
+    int youthCount = (int)(ViewBag.YouthCount ?? 0);
+    int adultCount = (int)(ViewBag.AdultCount ?? 0);
+    decimal totalPrice = (decimal)(ViewBag.TotalPrice ?? 0m);
+
+ 
+    decimal totalWeight = (childCount * 0.70m) + (youthCount * 0.85m) + adultCount;
+
+    decimal childPrice = 0;
+    decimal childTotal = 0;
+    decimal youthTotal = 0;
+    decimal adultTotal = 0;
+
+    
+    if (totalWeight > 0)
+    {
+        childPrice = totalPrice / totalWeight;
+        childTotal = childCount * childPrice * 0.70m;
+        youthTotal = youthCount * childPrice * 0.85m;
+        adultTotal = adultCount * childPrice;
+    }
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+
+@await Component.InvokeAsync("_TourHeadComponentPartial")
+
+<style>
+    .rv-wrap {
+        padding: 2rem;
+        background: #E6F1FB;
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+
+    .rv-layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .rv-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 0.5px solid #B5D4F4;
+    }
+
+    .rv-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: #185FA5;
+        color: #E6F1FB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .rv-title {
+        font-size: 20px;
+        font-weight: 500;
+        color: #042C53;
+    }
+
+    .rv-subtitle {
+        font-size: 13px;
+        color: #185FA5;
+        margin-top: 2px;
+    }
+
+    .rv-counts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .rv-count {
+        background: #fff;
+        border-radius: 10px;
+        padding: 14px;
+        text-align: center;
+        border: 0.5px solid #B5D4F4;
+    }
+
+    .rv-count-val {
+        font-size: 22px;
+        font-weight: 500;
+        color: #185FA5;
+    }
+
+    .rv-count-label {
+        font-size: 11px;
+        color: #378ADD;
+        margin-top: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .rv-form {
+        background: #fff;
+        border: 0.5px solid #B5D4F4;
+        border-radius: 14px;
+        padding: 1.5rem;
+    }
+
+    .rv-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .rv-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .rv-field.full {
+            grid-column: 1 / -1;
+        }
+
+    .rv-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: #185FA5;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .rv-input {
+        height: 40px;
+        border: 0.5px solid #B5D4F4;
+        border-radius: 8px;
+        background: #fff;
+        color: #042C53;
+        font-size: 14px;
+        padding: 0 12px;
+        width: 100%;
+        outline: none;
+    }
+
+        .rv-input:focus {
+            box-shadow: 0 0 0 2px #85B7EB;
+            border-color: #378ADD;
+        }
+
+    .rv-textarea {
+        border: 0.5px solid #B5D4F4;
+        border-radius: 8px;
+        background: #fff;
+        color: #042C53;
+        font-size: 14px;
+        padding: 10px 12px;
+        width: 100%;
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    .rv-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.25rem;
+        padding-top: 1.25rem;
+        border-top: 0.5px solid #B5D4F4;
+    }
+
+    .rv-total-label {
+        font-size: 12px;
+        color: #378ADD;
+    }
+
+    .rv-total-val {
+        font-size: 26px;
+        font-weight: 500;
+        color: #0C447C;
+    }
+
+    .rv-btn {
+        background: #185FA5;
+        color: #E6F1FB;
+        border: none;
+        border-radius: 8px;
+        padding: 0 20px;
+        height: 44px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .rv-btn:hover {
+            background: #0C447C;
+        }
+
+    .rv-summary {
+        background: #fff;
+        border: 0.5px solid #B5D4F4;
+        border-radius: 14px;
+        padding: 1.25rem;
+        margin-bottom: 14px;
+    }
+
+    .rv-summary-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: #042C53;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 0.5px solid #B5D4F4;
+    }
+
+    .rv-summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 13px;
+    }
+
+    .rv-summary-row-label {
+        color: #378ADD;
+    }
+
+    .rv-summary-row-val {
+        color: #0C447C;
+        font-weight: 500;
+    }
+
+    .rv-summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        margin-top: 6px;
+        border-top: 0.5px solid #B5D4F4;
+    }
+
+    .rv-summary-total-label {
+        font-size: 13px;
+        color: #378ADD;
+    }
+
+    .rv-summary-total-val {
+        font-size: 22px;
+        font-weight: 500;
+        color: #0C447C;
+    }
+
+    .rv-trust {
+        background: #0C447C;
+        border-radius: 14px;
+        padding: 1.25rem;
+    }
+
+    .rv-trust-title {
+        font-size: 11px;
+        font-weight: 500;
+        color: #85B7EB;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 12px;
+    }
+
+    .rv-trust-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 0.5px solid #185FA5;
+    }
+
+        .rv-trust-item:last-child {
+            border-bottom: none;
+        }
+
+    .rv-trust-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #5DCAA5;
+        flex-shrink: 0;
+        margin-top: 4px;
+    }
+
+    .rv-trust-text {
+        font-size: 12px;
+        color: #B5D4F4;
+        line-height: 1.5;
+    }
+</style>
+
+<body class="body header-fixed">
+    <div id="wrapper">
+        <div id="pagee" class="clearfix">
+            @await Component.InvokeAsync("_TourHeaderComponentPartial")
+            <main id="main">
+                <section>
+                    <div class="tf-container full">
+                        <div class="row">
+                            <div class="col-md-12" style="padding:0;">
+                                <img src="/vitour/banner2.jpg" alt="image"
+                                     style="width:100%;height:300px;object-fit:cover;object-position:center;">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tour-single">
+                    <div class="tf-container">
+                        <div class="rv-wrap">
+                            <div class="rv-layout">
+                                <div>
+                                    <div class="rv-header">
+                                        <div class="rv-icon">
+                                            <i class="bi bi-calendar2-check" style="font-size:22px;"></i>
+                                        </div>
+                                        <div>
+                                            <p class="rv-title">Rezervasyon Yap</p>
+                                            <p class="rv-subtitle">@ViewBag.TourTitle</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="rv-counts">
+                                        <div class="rv-count">
+                                            <p class="rv-count-val">@ViewBag.ChildCount</p>
+                                            <p class="rv-count-label">Çocuk</p>
+                                        </div>
+                                        <div class="rv-count">
+                                            <p class="rv-count-val">@ViewBag.YouthCount</p>
+                                            <p class="rv-count-label">Genç</p>
+                                        </div>
+                                        <div class="rv-count">
+                                            <p class="rv-count-val">@ViewBag.AdultCount</p>
+                                            <p class="rv-count-label">Yetişkin</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="rv-form">
+                                        <form asp-action="Create" asp-controller="Reservation" method="post">
+                                            <input type="hidden" name="TourId" value="@ViewBag.TourId" />
+                                            <input type="hidden" name="ChildCount" value="@ViewBag.ChildCount" />
+                                            <input type="hidden" name="YouthCount" value="@ViewBag.YouthCount" />
+                                            <input type="hidden" name="AdultCount" value="@ViewBag.AdultCount" />
+                                            <input type="hidden" name="TotalPrice" value="@ViewBag.TotalPrice" />
+
+                                            <div class="rv-form-grid">
+                                                <div class="rv-field">
+                                                    <label class="rv-label">Ad Soyad</label>
+                                                    <input class="rv-input" type="text" name="NameSurname" placeholder="Adınız ve soyadınız" required />
+                                                </div>
+                                                <div class="rv-field">
+                                                    <label class="rv-label">E-posta</label>
+                                                    <input class="rv-input" type="email" name="Email" placeholder="ornek@mail.com" required />
+                                                </div>
+                                                <div class="rv-field">
+                                                    <label class="rv-label">Telefon</label>
+                                                    <input class="rv-input" type="tel" name="Phone" placeholder="05xx xxx xx xx" required />
+                                                </div>
+                                                <div class="rv-field">
+                                                    <label class="rv-label">Tur Tarihi</label>
+                                                    <input class="rv-input" type="date" name="TourDate" required />
+                                                </div>
+                                                <div class="rv-field full">
+                                                    <label class="rv-label">Adres</label>
+                                                    <textarea class="rv-textarea" name="Address" placeholder="Adresinizi giriniz" required></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="rv-footer">
+                                                <div>
+                                                    <p class="rv-total-label">Toplam Tutar</p>
+                                                    <p class="rv-total-val">$@ViewBag.TotalPrice</p>
+                                                </div>
+                                                <button type="submit" class="rv-btn">
+                                                    <i class="bi bi-check2-circle"></i>
+                                                    Rezervasyonu Tamamla
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="rv-summary">
+                                        <p class="rv-summary-title">Rezervasyon Özeti</p>
+                                        @if ((int)ViewBag.ChildCount > 0)
+                                        {
+                                            <div class="rv-summary-row">
+                                                <span class="rv-summary-row-label">Çocuk × @ViewBag.ChildCount</span>
+                                                <span class="rv-summary-row-val">$@childTotal.ToString("F2")</span>
+                                            </div>
+                                        }
+                                        @if ((int)ViewBag.YouthCount > 0)
+                                        {
+                                            <div class="rv-summary-row">
+                                                <span class="rv-summary-row-label">Genç × @ViewBag.YouthCount</span>
+                                                <span class="rv-summary-row-val">$@youthTotal.ToString("F2")</span>
+                                            </div>
+                                        }
+                                        @if ((int)ViewBag.AdultCount > 0)
+                                        {
+                                            <div class="rv-summary-row">
+                                                <span class="rv-summary-row-label">Yetişkin × @ViewBag.AdultCount</span>
+                                                <span class="rv-summary-row-val">$@adultTotal.ToString("F2")</span>
+                                            </div>
+                                        }
+                                        <div class="rv-summary-total">
+                                            <span class="rv-summary-total-label">Toplam</span>
+                                            <span class="rv-summary-total-val">$@ViewBag.TotalPrice</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="rv-trust">
+                                        <p class="rv-trust-title">Güvenli Rezervasyon</p>
+                                        <div class="rv-trust-item">
+                                            <span class="rv-trust-dot"></span>
+                                            <span class="rv-trust-text">Onay e-posta adresinize gönderilecektir.</span>
+                                        </div>
+                                        <div class="rv-trust-item">
+                                            <span class="rv-trust-dot"></span>
+                                            <span class="rv-trust-text">Ödeme için sizinle iletişime geçilecektir.</span>
+                                        </div>
+                                        <div class="rv-trust-item">
+                                            <span class="rv-trust-dot"></span>
+                                            <span class="rv-trust-text">İptal için 48 saat öncesinde bildirim yapınız.</span>
+                                        </div>
+                                        <div class="rv-trust-item">
+                                            <span class="rv-trust-dot"></span>
+                                            <span class="rv-trust-text">7/24 müşteri desteği mevcuttur.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            @await Component.InvokeAsync("_TourFooterComponentPartial")
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 p-4">
+                <div style="width:64px;height:64px;border-radius:50%;background:#EAF3DE;color:#3B6D11;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+                    <i class="bi bi-check-lg" style="font-size:28px;"></i>
+                </div>
+                <h5 class="fw-semibold text-center mb-1">Rezervasyonunuz Alındı!</h5>
+                <p class="text-muted small text-center mb-4">Talebiniz başarıyla oluşturuldu.</p>
+                <div class="border rounded-3 p-3 mb-4" style="background:#f9f9f9;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-envelope text-primary" style="font-size:14px;"></i>
+                        <span class="small text-muted">Onay e-posta adresinize gönderilecektir.</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-telephone text-primary" style="font-size:14px;"></i>
+                        <span class="small text-muted">Ödeme için sizinle iletişime geçilecektir.</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-clock text-primary" style="font-size:14px;"></i>
+                        <span class="small text-muted">İptal için 48 saat öncesinde bildirim yapınız.</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a asp-action="TourList" asp-controller="Tour" class="btn btn-primary btn-sm px-4 rounded-3 flex-grow-1">
+                        <i class="bi bi-house me-1"></i>Ana Sayfa
+                    </a>
+                    <button class="btn btn-outline-secondary btn-sm px-4 rounded-3 flex-grow-1" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-1"></i>Kapat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            window.addEventListener('load', function () {
+                var modal = new bootstrap.Modal(document.getElementById('successModal'));
+                modal.show();
+            });
+        </script>
+    }
+
+    @await Component.InvokeAsync("_TourScriptComponentPartial")
+</body>
+</html>
+

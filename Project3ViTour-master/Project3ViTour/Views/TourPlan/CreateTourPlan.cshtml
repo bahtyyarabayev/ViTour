@@ -1,0 +1,255 @@
+﻿@model List<Project3ViTour.Dtos.TourPlanDtos.CreateTourPlanDto>
+@{
+    ViewData["Title"] = "Tur Programı Oluştur";
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+}
+
+<style>
+    .tour-plan-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        font-family: 'Segoe UI', sans-serif;
+        color: #333;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f0f2f5;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .tour-select-box {
+        width: 300px;
+    }
+
+    .day-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-left: 6px solid #4f46e5;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .day-title {
+        color: #4f46e5;
+        font-weight: 800;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .input-group-custom {
+        margin-bottom: 15px;
+    }
+
+        .input-group-custom label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+    .input-custom {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+        .input-custom:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+    .items-wrapper {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px dashed #cbd5e1;
+    }
+
+    .item-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .btn-add-day {
+        background: #6366f1;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .btn-save-all {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        width: 100%;
+        font-size: 1.1rem;
+    }
+
+    .btn-remove {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn-small-add {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+</style>
+
+<div class="tour-plan-container">
+    <div class="form-card">
+        @* Action adını CreateTourPlan yapmayı unutma *@
+        <form asp-action="CreateTourPlan" method="post" id="tourPlanForm">
+            <div class="header-section">
+                <div>
+                    <h2 style="margin:0;">📅 Tur Programı Oluştur</h2>
+                    <small style="color:gray;">Maksimum 5 gün ekleyebilirsiniz.</small>
+                </div>
+                <div class="tour-select-box">
+                    <label style="font-weight:bold; display:block; margin-bottom:5px;">İlişkili Tur</label>
+                    @* Ana seçici ID eklendi *@
+                    <select id="mainTourSelect" class="input-custom" required>
+                        <option value="">Tur Seçiniz...</option>
+                        @foreach (var item in (SelectList)ViewBag.Tours)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div id="daysContainer">
+                <div class="day-card" data-day="1">
+                    <div class="day-title"><span>1. GÜN</span></div>
+
+                    @* Gizli TourId alanı *@
+                    <input type="hidden" name="[0].TourId" class="day-tour-id" />
+                    <input type="hidden" name="[0].DayNumber" value="1" />
+
+                    <div class="input-group-custom">
+                        <label>Gün Başlığı</label>
+                        <input type="text" name="[0].Title" class="input-custom" placeholder="Örn: Karşılama" required />
+                    </div>
+
+                    <div class="input-group-custom">
+                        <label>Günlük Açıklama</label>
+                        <textarea name="[0].Description" rows="3" class="input-custom" placeholder="Detaylar..."></textarea>
+                    </div>
+
+                    <div class="items-wrapper">
+                        <label style="font-size:0.8rem; font-weight:bold; color:#64748b;">Önemli Maddeler</label>
+                        <div class="day-items-container">
+                            <div class="item-row">
+                                <input type="text" name="[0].Items" class="input-custom" placeholder="Örn: Kahvaltı dahil" />
+                            </div>
+                        </div>
+                        <button type="button" class="btn-small-add add-item-btn" style="margin-top:10px;">+ Madde Ekle</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-add-day" id="btnAddDay">➕ Yeni Gün Ekle (Maks 5)</button>
+            <button type="submit" class="btn-save-all">🚀 Tüm Programı Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    let dayCount = 1;
+
+    document.getElementById('btnAddDay').addEventListener('click', function () {
+        if (dayCount >= 5) return alert("Maksimum 5 gün!");
+
+        const container = document.getElementById('daysContainer');
+        const index = dayCount;
+        dayCount++;
+
+        const html = `
+                <div class="day-card" data-day="${dayCount}">
+                    <div class="day-title">
+                        <span>${dayCount}. GÜN</span>
+                        <button type="button" class="btn-remove remove-day-btn">Kaldır</button>
+                    </div>
+                    <input type="hidden" name="[${index}].TourId" class="day-tour-id" />
+                    <input type="hidden" name="[${index}].DayNumber" value="${dayCount}" />
+                    <div class="input-group-custom">
+                        <label>Gün Başlığı</label>
+                        <input type="text" name="[${index}].Title" class="input-custom" required />
+                    </div>
+                    <div class="input-group-custom">
+                        <label>Günlük Açıklama</label>
+                        <textarea name="[${index}].Description" rows="3" class="input-custom"></textarea>
+                    </div>
+                    <div class="items-wrapper">
+                        <div class="day-items-container">
+                            <div class="item-row"><input type="text" name="[${index}].Items" class="input-custom" /></div>
+                        </div>
+                        <button type="button" class="btn-small-add add-item-btn" style="margin-top:10px;">+ Madde Ekle</button>
+                    </div>
+                </div>`;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('add-item-btn')) {
+            const container = e.target.previousElementSibling;
+            const index = Array.from(document.querySelectorAll('.day-card')).indexOf(e.target.closest('.day-card'));
+            container.insertAdjacentHTML('beforeend', `<div class="item-row"><input type="text" name="[${index}].Items" class="input-custom" /><button type="button" class="btn-remove" onclick="this.parentElement.remove()">X</button></div>`);
+        }
+        if (e.target.classList.contains('remove-day-btn')) {
+            e.target.closest('.day-card').remove();
+            dayCount--;
+        }
+    });
+
+    // Kaydet butonuna basıldığında üstteki TourId'yi her güne kopyala
+    document.getElementById('tourPlanForm').addEventListener('submit', function (e) {
+        const tourId = document.getElementById('mainTourSelect').value;
+        if (!tourId) {
+            alert("Lütfen bir tur seçin!");
+            e.preventDefault();
+            return;
+        }
+        document.querySelectorAll('.day-tour-id').forEach(input => {
+            input.value = tourId;
+        });
+    });
+</script>

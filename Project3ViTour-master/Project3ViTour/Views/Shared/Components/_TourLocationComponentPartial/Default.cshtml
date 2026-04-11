@@ -1,0 +1,54 @@
+﻿@model Project3ViTour.Dtos.TourDtos.GetTourByIdDto
+@{
+    Layout = null;
+}
+<div class="tab-pane fade" id="pills-location-share" role="tabpanel"
+     aria-labelledby="pills-location-share-tab" tabindex="0">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="localtion-content-tour">
+                <div class="map2 relative mb-32">
+                    <div id="map2"></div>
+                </div>
+                <div class="flex-three map-list mb-50">
+                    <i class="icon-18"></i>
+                    <p>@Model.Location</p>
+                </div>
+                <h3 class="title-location">Description:</h3>
+                <p class="des mb-22">
+                    Description It is a long established fact that
+                    a reader will be distrac by any websites look for ways mornings
+                    even
+                    of spring prevent AdBlock from blocking annoying ads. As a
+                    result, we've focused on improving our funct walk
+                    so that we can overcome these anti-ad blocking attempts. Of
+                    course, you can help us continue improve our
+                    ad blocking ability by reporting any time you run into a website
+                    that won't allow you to block the readable dine
+                    content of a page when looking at its layout. It is a long
+                    established fact
+                </p>
+                <ul class="listing-des">
+                    <li>
+                        <p>View the City Walls</p>
+                    </li>
+                    <li>
+                        <p>Hiking in the forest</p>
+                    </li>
+                    <li>
+                        <p>Discover the famous view point “The Lark”</p>
+                    </li>
+                    <li>
+                        <p>Sunset on the cruise</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="side-bar-right">
+                @await Component.InvokeAsync("_TourTicketComponentPartial")
+            </div>
+        </div>
+    </div>
+
+</div>

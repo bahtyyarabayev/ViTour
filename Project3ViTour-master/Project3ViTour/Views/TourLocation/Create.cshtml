@@ -1,0 +1,94 @@
+﻿@model Project3ViTour.Dtos.TourLocationDtos.CreateTourLocationDto
+
+@{
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h4 class="mb-4 fw-semibold">Yeni Lokasyon Ekle</h4>
+
+                <form asp-action="Create" asp-controller="TourLocation" method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Resim URL</label>
+                        <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                        <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Açıklama</label>
+                        <textarea asp-for="Description" class="form-control" rows="5"
+                                  placeholder="Lokasyon açıklaması..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Tur Seç</label>
+                        <select asp-for="TourId" class="form-select">
+                            <option value="">-- Tur Seçiniz --</option>
+                            @foreach (var tour in ViewBag.Tours as List<Project3ViTour.Dtos.TourDtos.ResultTourDto>)
+                            {
+                                <option value="@tour.TourId">@tour.Title</option>
+                            }
+                        </select>
+                        <span asp-validation-for="TourId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">Maddeler</label>
+                        <div id="items-container">
+                            <div class="input-group mb-2">
+                                <input type="text" name="Items[0]" class="form-control"
+                                       placeholder="Madde giriniz..." />
+                                <button type="button" class="btn btn-outline-danger"
+                                        onclick="removeItem(this)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mt-1"
+                                onclick="addItem()">
+                            + Madde Ekle
+                        </button>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Kaydet</button>
+                        <a asp-action="Index" asp-controller="TourLocation"
+                           class="btn btn-outline-secondary px-4">İptal</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let itemIndex = 1;
+
+    function addItem() {
+        const container = document.getElementById('items-container');
+        const div = document.createElement('div');
+        div.className = 'input-group mb-2';
+        div.innerHTML = `
+            <input type="text" name="Items[${itemIndex}]" class="form-control"
+                   placeholder="Madde giriniz..." />
+            <button type="button" class="btn btn-outline-danger" onclick="removeItem(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+        container.appendChild(div);
+        itemIndex++;
+    }
+
+    function removeItem(btn) {
+        const container = document.getElementById('items-container');
+        if (container.children.length > 1) {
+            btn.closest('.input-group').remove();
+        }
+    }
+</script>

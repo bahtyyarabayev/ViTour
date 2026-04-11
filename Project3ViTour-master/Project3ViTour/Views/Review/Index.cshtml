@@ -1,0 +1,131 @@
+﻿@model List<Project3ViTour.Dtos.ReviewDtos.ResultReviewDto>
+@{
+    Layout = "~/Views/Shared/_TourLayout.cshtml";
+    ViewData["Title"] = "Yorumlar";
+    var avgScore = Model.Count > 0 ? Model.Average(x => x.Score).ToString("F1") : "0";
+    var uniqueUsers = Model.Select(x => x.NameSurname).Distinct().Count();
+    var lastDate = Model.Count > 0 ? Model.Max(x => x.ReviewDate).ToString("dd.MM") : "-";
+}
+
+<div class="container mt-5">
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#E6F1FB;color:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-chat-left-text-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@Model.Count</p>
+                    <p class="text-muted small mb-0">Toplam Yorum</p>
+                    <p style="font-size:11px;color:#aaa;margin:0;">Tüm turlar</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#FAEEDA;color:#854F0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-star-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@avgScore</p>
+                    <p class="text-muted small mb-0">Ortalama Puan</p>
+                    <p style="font-size:11px;color:#aaa;margin:0;">5 üzerinden</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#E1F5EE;color:#0F6E56;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-people-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@uniqueUsers</p>
+                    <p class="text-muted small mb-0">Yorum Yapan</p>
+                    <p style="font-size:11px;color:#aaa;margin:0;">Tekil kişi</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-4 border">
+                <div style="width:44px;height:44px;border-radius:10px;background:#EEEDFE;color:#534AB7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-calendar-check-fill" style="font-size:18px;"></i>
+                </div>
+                <div>
+                    <p class="fw-semibold fs-5 mb-0">@lastDate</p>
+                    <p class="text-muted small mb-0">Son Yorum</p>
+                    <p style="font-size:11px;color:#aaa;margin:0;">Tarih</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold mb-0">Yorumlar</h5>
+    </div>
+
+    <div class="table-responsive rounded-4 border">
+        <table class="table table-borderless align-middle mb-0 bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-muted small fw-semibold">Kişi</th>
+                    <th class="text-muted small fw-semibold">Yorum</th>
+                    <th class="text-muted small fw-semibold">Puan</th>
+                    <th class="text-muted small fw-semibold">Tarih</th>
+                    <th class="text-muted small fw-semibold">Tur</th>
+                    <th class="text-muted small fw-semibold">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var initials = string.Join("", item.NameSurname.Split(' ').Take(2).Select(x => x[0]));
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div style="width:32px;height:32px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                    @initials
+                                </div>
+                                <span class="fw-semibold small">@item.NameSurname</span>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="mb-0 small text-muted text-truncate" style="max-width:200px;">
+                                @item.Detail
+                            </p>
+                        </td>
+                        <td>
+                            <span class="text-warning small">
+                                @string.Concat(Enumerable.Repeat("★", item.Score))@string.Concat(Enumerable.Repeat("☆", 5 - item.Score))
+                            </span>
+                        </td>
+                        <td class="small text-muted">@item.ReviewDate.ToString("dd.MM.yyyy")</td>
+                        <td class="small">@item.TourTitle</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Detail" asp-controller="Review"
+                               asp-route-id="@item.ReviewId"
+                               class="btn btn-outline-secondary btn-sm">
+                                    Detay
+                                </a>
+                                <a asp-action="Delete" asp-controller="Review"
+                               asp-route-id="@item.ReviewId"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Yorumu silmek istediğinize emin misiniz?')">
+                                    Sil
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Count == 0)
+        {
+            <div class="text-center text-muted py-5">
+                <p>Henüz yorum eklenmemiş.</p>
+            </div>
+        }
+    </div>
+</div>
