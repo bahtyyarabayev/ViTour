@@ -9,7 +9,7 @@ namespace Project3ViTour.Controllers
     public class TourPlanController : Controller
     {
         private readonly ITourPlanService _tourPlanService;
-        private readonly ITourService _tourService; // Tur listesini çekmek için gerekli
+        private readonly ITourService _tourService; 
 
         public TourPlanController(ITourPlanService tourPlanService, ITourService tourService)
         {
@@ -19,7 +19,7 @@ namespace Project3ViTour.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Tüm planları servis aracılığıyla getiriyoruz
+           
             var values = await _tourPlanService.GetAllTourPlansAsync();
             return View(values);
         }
@@ -38,7 +38,7 @@ namespace Project3ViTour.Controllers
             {
                 foreach (var plan in model)
                 {
-                    // Title boşsa (yanlışlıkla boş gün eklendiyse) atla
+                 
                     if (string.IsNullOrEmpty(plan.Title)) continue;
 
                     await _tourPlanService.CreateTourPlanAsync(plan);
@@ -46,7 +46,7 @@ namespace Project3ViTour.Controllers
                 return RedirectToAction("Index", "TourPlan");
             }
 
-            // Model boşsa sayfayı hatalarıyla tekrar yükle
+    
             return View();
         }
     }
