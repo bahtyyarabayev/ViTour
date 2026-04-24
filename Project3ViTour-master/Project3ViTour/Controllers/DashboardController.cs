@@ -60,7 +60,7 @@ namespace Project3ViTour.Controllers
             var tours = await _tourService.GetAllToursAsync();
             var reservations = await _reservationService.GetAllReservationsAsync();
 
-            // Tur bazlı rezervasyon özeti (Geri eklendi)
+          
             var topTours = reservations
                 .GroupBy(x => x.TourTitle)
                 .Select(g => new TopTourDto
@@ -124,7 +124,7 @@ namespace Project3ViTour.Controllers
         {
             container.PaddingTop(20).Column(col =>
             {
-                // Üst Özet Kartları
+               
                 col.Item().PaddingBottom(20).Row(row =>
                 {
                     row.RelativeItem().Border(1).BorderColor("#E6F1FB").Padding(12).Column(c => {
@@ -143,7 +143,7 @@ namespace Project3ViTour.Controllers
                     });
                 });
 
-                // 1. BÖLÜM: Tur Bazlı Rezervasyon Dağılımı (Geri eklendi)
+                
                 col.Item().PaddingBottom(8).Text("Tur Bazlı Rezervasyon Dağılımı").FontSize(13).Bold().FontColor("#042C53");
                 col.Item().PaddingBottom(20).Table(table =>
                 {
@@ -162,16 +162,16 @@ namespace Project3ViTour.Controllers
                     }
                 });
 
-                // 2. BÖLÜM: Müşteri ve İletişim Detayları
+                
                 col.Item().PaddingBottom(8).Text("Müşteri ve İletişim Detayları").FontSize(13).Bold().FontColor("#042C53");
                 col.Item().Table(table =>
                 {
                     table.ColumnsDefinition(columns => {
-                        columns.RelativeColumn(2); // Ad Soyad
-                        columns.RelativeColumn(2); // Email
-                        columns.RelativeColumn(1.5f); // Telefon
-                        columns.RelativeColumn(2); // Tur
-                        columns.RelativeColumn(1); // Tutar
+                        columns.RelativeColumn(2); 
+                        columns.RelativeColumn(2); 
+                        columns.RelativeColumn(1.5f); 
+                        columns.RelativeColumn(2); 
+                        columns.RelativeColumn(1); 
                     });
 
                     table.Header(header => {
