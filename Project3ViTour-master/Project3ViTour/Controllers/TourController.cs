@@ -36,7 +36,7 @@ namespace Project3ViTour.Controllers
         {
             return View();
         }
-        // 1. TourDetay metodunu "async Task<IActionResult>" olarak güncelledik
+       
         public async Task<IActionResult> TourDetay(string id)
         {
             var values = await _tourService.GetTourByIdAsync(id);
@@ -69,13 +69,13 @@ namespace Project3ViTour.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateLocation(string id, string location)
         {
-            // Manuel olarak DTO oluşturuyoruz
+          
             var updateDto = new UpdateTourDto
             {
-                TourId = id, // DTO içindeki ID alanı neyse o (Id veya TourId)
+                TourId = id,
                 Location = location,
-                // Eğer UpdateTourDto içinde başka zorunlu alanlar varsa (Title vb.) 
-                // onları da tour nesnesinden alıp buraya eklemelisin.
+                 
+              
             };
 
             await _tourService.UpdateTourAsync(updateDto);
