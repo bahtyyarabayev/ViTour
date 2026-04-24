@@ -27,14 +27,14 @@ namespace Project3ViTour.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateGalleryImage()
         {
-            // 1. Veritabanından turları çekiyoruz
+           
             var tours = await _tourService.GetAllToursAsync();
 
-            // 2. ViewBag.Tours'u dolduruyoruz (Hata veren boşluğu dolduruyoruz)
+          
             ViewBag.Tours = tours.Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
-                Text = x.Title,          // Ekranda görünecek isim
-                Value = x.TourId.ToString() // Arka planda gidecek ID
+                Text = x.Title,          
+                Value = x.TourId.ToString() 
             }).ToList();
 
             return View();
@@ -44,7 +44,7 @@ namespace Project3ViTour.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Sayfa hata verip geri dönerse dropdown boş kalmasın diye tekrar dolduruyoruz
+                
                 var tours = await _tourService.GetAllToursAsync();
                 ViewBag.Tours = tours.Select(x => new SelectListItem { Text = x.Title, Value = x.TourId }).ToList();
                 return View(createGalleryImageDto);
@@ -61,15 +61,13 @@ namespace Project3ViTour.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateGalleryImage(string id)
         {
-            // 1. Görsel verisini al
+            
             var value = await _galleryImageService.GetGalleryImageByIdAsync(id);
 
-            // 2. Turları al (Service'in hangisiyse onu kullan, örn: _tourService)
+            
             var tours = await _tourService.GetAllToursAsync();
 
-            // 3. Turları SelectList formatında ViewBag'e koy
-            // "TourId" -> Value (Arka planda dönecek Id)
-            // "Title"  -> Text  (Ekranda görünecek isim)
+            
             ViewBag.Tours = new SelectList(tours, "TourId", "Title");
 
             return View(value);
